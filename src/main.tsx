@@ -1,7 +1,17 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import './index.css';
 import App from './App.tsx';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 async function enableMocking() {
   if (!import.meta.env.DEV) {
@@ -9,14 +19,15 @@ async function enableMocking() {
   }
 
   const { worker } = await import('./mocks/browser');
-  // `onUnhandledRequest: 'bypass'` evita warnings no console para rotas que não são da API (como imagens e assets)
   return worker.start({ onUnhandledRequest: 'bypass' });
 }
 
 enableMocking().then(() => {
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
-      <App />
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
     </StrictMode>
   );
 });
