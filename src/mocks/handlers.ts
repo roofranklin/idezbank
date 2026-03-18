@@ -51,22 +51,41 @@ export const handlers = [
         const search = url.searchParams.get('search')?.toLowerCase();
         const type = url.searchParams.get('type');
 
+        // Novos parâmetros
+        const startDate = url.searchParams.get('startDate');
+        const endDate = url.searchParams.get('endDate');
+        const minAmount = url.searchParams.get('minAmount');
+        const maxAmount = url.searchParams.get('maxAmount');
+
         let filtered = [...transactions];
 
-        // Filtro de busca por descrição
         if (search) {
             filtered = filtered.filter((t) => t.description.toLowerCase().includes(search));
         }
 
-        // Filtro por tipo (entrada/saída)
         if (type === 'income' || type === 'expense') {
             filtered = filtered.filter((t) => t.type === type);
         }
 
-        // Ordenação (Padrão: mais recentes primeiro)
+        if (startDate) {
+            filtered = filtered.filter((t) => new Date(t.date) >= new Date(startDate));
+        }
+
+        if (endDate) {
+            const end = new Date(endDate);
+            end.setUTCHours(23, 59, 59, 999);
+            filtered = filtered.filter((t) => new Date(t.date) <= end);
+        }
+
+        if (minAmount) {
+            filtered = filtered.filter((t) => t.amount >= Number(minAmount));
+        }
+        if (maxAmount) {
+            filtered = filtered.filter((t) => t.amount <= Number(maxAmount));
+        }
+
         filtered.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-        // Paginação
         const totalCount = filtered.length;
         const totalPages = Math.ceil(totalCount / limit);
         const start = (page - 1) * limit;
