@@ -21,11 +21,11 @@ Pré-requisitos: Ter o [Node.js](https://nodejs.org/) instalado (versão 18 ou s
 
 1. Clone o repositório:
    ```bash
-   git clone [https://github.com/SEU_USUARIO/fintech-dashboard.git](https://github.com/SEU_USUARIO/fintech-dashboard.git)
+   git clone [https://github.com/roofranklin/idezbank.git](https://github.com/roofranklin/idezbank.git)
    ```
 2. Entre no diretório:
    ```bash
-   cd fintech-dashboard
+   cd idezbank
    ```
 3. Instale as dependências:
    ```bash

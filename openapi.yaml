@@ -1,13 +1,22 @@
 openapi: 3.0.3
 info:
-  title: Fintech Dashboard API
+  title: IdezBank API
   version: 1.0.0
-  description: API mockada para o painel financeiro inteligente.
+  description: API mockada para o dashboard da IdezBank.
 paths:
   /summary:
     get:
       summary: Obter resumo financeiro
-      description: Retorna o saldo total, receitas e despesas do mês atual.
+      description: Retorna o saldo total, receitas e despesas com base no mês e ano selecionados.
+      parameters:
+        - in: query
+          name: month
+          schema: { type: string }
+          description: Mês numérico (ex. 3 para março)
+        - in: query
+          name: year
+          schema: { type: string }
+          description: Ano (ex. 2026)
       responses:
         '200':
           description: Resumo retornado com sucesso.
@@ -15,6 +24,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Summary'
+
+  /available-months:
+    get:
+      summary: Obter meses com transações
+      description: Retorna a lista de meses/anos únicos que possuem transações registradas.
+      responses:
+        '200':
+          description: Lista de meses/anos retornada com sucesso.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AvailableMonth'
 
   /transactions:
     get:
@@ -84,6 +107,12 @@ components:
         totalBalance: { type: number, example: 15450.00 }
         totalIncome: { type: number, example: 20000.00 }
         totalExpense: { type: number, example: 4550.00 }
+    
+    AvailableMonth:
+      type: object
+      properties:
+        year: { type: integer, example: 2026 }
+        month: { type: integer, example: 3 }
     
     Transaction:
       type: object
