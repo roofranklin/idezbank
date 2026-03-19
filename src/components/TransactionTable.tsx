@@ -80,7 +80,7 @@ export function TransactionTable() {
                     </select>
                 </div>
 
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                     <input
                         type="date"
                         value={startDate}
@@ -134,17 +134,17 @@ export function TransactionTable() {
                         <table className="w-full text-left text-sm whitespace-nowrap">
                             <thead className="text-gray-400 font-medium border-b border-gray-100 bg-white">
                                 <tr>
-                                    <th className="px-6 py-4 font-medium w-16">Status</th>
-                                    <th className="px-6 py-4 font-medium">Descrição</th>
-                                    <th className="px-6 py-4 font-medium">Categoria</th>
-                                    <th className="px-6 py-4 font-medium">Data</th>
-                                    <th className="px-6 py-4 font-medium text-right">Valor</th>
+                                    <th className="px-4 sm:px-6 py-4 font-medium w-16 hidden sm:table-cell">Status</th>
+                                    <th className="px-4 sm:px-6 py-4 font-medium">Descrição</th>
+                                    <th className="px-4 sm:px-6 py-4 font-medium hidden sm:table-cell">Categoria</th>
+                                    <th className="px-4 sm:px-6 py-4 font-medium text-right sm:text-left">Data</th>
+                                    <th className="px-4 sm:px-6 py-4 font-medium text-right">Valor</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-50/50">
                                 {data.data.map((transaction) => (
                                     <tr key={transaction.id} className="hover:bg-gray-50/50 transition-colors group">
-                                        <td className="px-6 py-4">
+                                        <td className="px-4 sm:px-6 py-4 hidden sm:table-cell">
                                             <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${transaction.type === 'income' ? 'bg-success/10 text-success' : 'bg-gray-100 text-gray-500'}`}>
                                                 {transaction.type === 'income' ? (
                                                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -157,14 +157,19 @@ export function TransactionTable() {
                                                 )}
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 font-medium text-gray-900">{transaction.description}</td>
-                                        <td className="px-6 py-4">
+                                        <td 
+                                            className="px-4 sm:px-6 py-4 font-medium text-gray-900 max-w-[110px] sm:max-w-none truncate" 
+                                            title={transaction.description}
+                                        >
+                                            {transaction.description}
+                                        </td>
+                                        <td className="px-4 sm:px-6 py-4 hidden sm:table-cell">
                                             <span className="bg-gray-100/80 text-gray-600 px-3 py-1 rounded-full text-xs font-medium border border-gray-200/60 inline-flex items-center justify-center">
                                                 {transaction.category}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 text-gray-500">{formatDate(transaction.date)}</td>
-                                        <td className={`px-6 py-4 text-right font-semibold ${transaction.type === 'income' ? 'text-success' : 'text-gray-900'}`}>
+                                        <td className="px-4 sm:px-6 py-4 text-gray-500 text-right sm:text-left whitespace-nowrap text-xs sm:text-sm">{formatDate(transaction.date)}</td>
+                                        <td className={`px-4 sm:px-6 py-4 text-right font-semibold whitespace-nowrap ${transaction.type === 'income' ? 'text-success' : 'text-gray-900'}`}>
                                             {transaction.type === 'income' ? '+' : '-'} {formatCurrency(transaction.amount)}
                                         </td>
                                     </tr>
