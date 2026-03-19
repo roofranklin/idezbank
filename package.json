@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "docs": "redocly build-docs openapi.yaml -o public/docs.html"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
