@@ -14,9 +14,13 @@ const queryClient = new QueryClient({
 });
 
 async function enableMocking() {
-  if (!import.meta.env.DEV) {
-    return;
-  }
+  /*
+  * Vou deixar essa condição comentada para que o mock funcione corretamente no deploy na Vercel 
+  * Caso isso evolua para uma API de produção, vou descomentar essa condição e comentar o código abaixo
+  */
+  // if (!import.meta.env.DEV) {
+  //   return;
+  // }
 
   const { worker } = await import('./mocks/browser');
   return worker.start({ onUnhandledRequest: 'bypass' });
