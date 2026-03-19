@@ -25,8 +25,22 @@ const transactions: Transaction[] = [
 
 export const handlers = [
     // Endpoint: Resumo Financeiro
-    http.get('/api/summary', () => {
-        const summary = transactions.reduce(
+    http.get('/api/summary', ({ request }) => {
+        const url = new URL(request.url);
+        const month = url.searchParams.get('month');
+        const year = url.searchParams.get('year');
+
+        let filteredTransactions = transactions;
+
+        if (month && year) {
+            filteredTransactions = transactions.filter((t) => {
+                const date = new Date(t.date);
+                // getMonth() em JS começa em 0, por isso o +1
+                return (date.getMonth() + 1).toString() === month && date.getFullYear().toString() === year;
+            });
+        }
+
+        const summary = filteredTransactions.reduce(
             (acc, transaction) => {
                 if (transaction.type === 'income') {
                     acc.totalIncome += transaction.amount;
@@ -41,6 +55,30 @@ export const handlers = [
         );
 
         return HttpResponse.json(summary);
+    }),
+
+    // Endpoint: Meses Disponíveis para o Filtro
+    http.get('/api/available-months', () => {
+        const monthsSet = new Set<string>();
+
+        transactions.forEach(t => {
+            const date = new Date(t.date);
+            const month = date.getMonth() + 1;
+            const year = date.getFullYear();
+            // Salva como string "YYYY-MM" para garantir unicidade
+            monthsSet.add(`${year}-${month}`);
+        });
+
+        const availableMonths = Array.from(monthsSet).map(item => {
+            const [year, month] = item.split('-');
+            return { year: Number(year), month: Number(month) };
+        }).sort((a, b) => {
+            // Ordena decrescente: ano maior primeiro, depois mês maior
+            if (a.year !== b.year) return b.year - a.year;
+            return b.month - a.month;
+        });
+
+        return HttpResponse.json(availableMonths);
     }),
 
     // Endpoint: Listagem de Transações (com filtros e paginação)

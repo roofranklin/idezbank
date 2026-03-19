@@ -10,21 +10,22 @@ import { ChartCard } from './components/ChartCard';
 export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { data: summary, isLoading, isError } = useSummary();
+  const [selectedMonth, setSelectedMonth] = useState(3);
+  const { data: summary, isLoading, isError } = useSummary({ month: selectedMonth, year: 2026 });
 
   return (
     <div className="min-h-screen bg-[#F7F9FC] flex font-sans antialiased text-gray-900 overflow-x-hidden">
       <Sidebar isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
-      
+
       <main className="flex-1 lg:ml-64 p-4 md:p-8 w-full max-w-[100vw]">
         <header className="mb-8 md:mb-10 flex gap-4 justify-between items-center">
           <div className="flex items-center gap-3 w-full">
-            <button 
+            <button
               onClick={() => setIsMobileMenuOpen(true)}
               className="lg:hidden flex-shrink-0 w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-600 shadow-sm hover:bg-gray-50 transition-colors"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
             <div className="relative w-full max-w-sm md:w-96">
@@ -38,7 +39,7 @@ export default function App() {
               />
             </div>
           </div>
-          
+
           <div className="flex gap-2 md:gap-4 items-center">
             <button className="hidden sm:flex w-10 h-10 bg-white rounded-full items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors">
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
@@ -55,7 +56,7 @@ export default function App() {
         <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
           <CreditCard />
           <SummaryCard data={summary} isLoading={isLoading} isError={isError} />
-          <ChartCard data={summary} isLoading={isLoading} />
+          <ChartCard />
         </section>
 
         <section className="bg-white rounded-[24px] p-5 md:p-8 -mx-4 md:mx-0 shadow-sm shadow-gray-100/50">

@@ -23,6 +23,7 @@ export function useCreateTransaction() {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['transactions'] });
             queryClient.invalidateQueries({ queryKey: ['summary'] });
+            queryClient.invalidateQueries({ queryKey: ['available-months'] });
         },
     });
 }
