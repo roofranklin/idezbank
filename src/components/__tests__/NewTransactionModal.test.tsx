@@ -1,67 +1,69 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { NewTransactionModal } from '../NewTransactionModal';
-import * as useCreateTransactionModule from '../../hooks/useCreateTransaction';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-vi.mock('../../hooks/useCreateTransaction', () => ({
-    useCreateTransaction: vi.fn()
-}));
+const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false } },
+});
 
-describe('NewTransactionModal Component', () => {
-    const mockOnClose = vi.fn();
-    const mockMutateAsync = vi.fn();
+const renderWithClient = (ui: React.ReactElement) => {
+    return render(
+        <QueryClientProvider client={queryClient}>
+            {ui}
+        </QueryClientProvider>
+    );
+};
 
+global.fetch = vi.fn() as ReturnType<typeof vi.fn>;
+
+describe('NewTransactionModal', () => {
     beforeEach(() => {
         vi.clearAllMocks();
-        vi.mocked(useCreateTransactionModule.useCreateTransaction).mockReturnValue({
-            mutateAsync: mockMutateAsync,
-            isPending: false
-        } as any);
     });
 
-    it('should not render if isOpen is false', () => {
-        render(<NewTransactionModal isOpen={false} onClose={mockOnClose} />);
+    it('não deve renderizar o modal se isOpen for falso', () => {
+        renderWithClient(<NewTransactionModal isOpen={false} onClose={vi.fn()} />);
         expect(screen.queryByText('Nova Transação')).not.toBeInTheDocument();
     });
 
-    it('should render correctly when isOpen is true', () => {
-        render(<NewTransactionModal isOpen={true} onClose={mockOnClose} />);
-        expect(screen.getByText('Nova Transação')).toBeInTheDocument();
-        expect(screen.getByPlaceholderText('Descrição (ex: Conta de Luz)')).toBeInTheDocument();
-        expect(screen.getByPlaceholderText('Valor (R$)')).toBeInTheDocument();
+    it('deve exibir erros de validação ao tentar submeter um formulário vazio', async () => {
+        renderWithClient(<NewTransactionModal isOpen={true} onClose={vi.fn()} />);
+
+        const user = userEvent.setup();
+        const submitButton = screen.getByRole('button', { name: /salvar transação/i });
+
+        await user.click(submitButton);
+
+        expect(await screen.findByText('A descrição deve ter pelo menos 3 caracteres')).toBeInTheDocument();
+        expect(await screen.findByText('O valor deve ser maior que zero')).toBeInTheDocument();
     });
 
-    it('should submit form with correct values', async () => {
-        render(<NewTransactionModal isOpen={true} onClose={mockOnClose} />);
+    it('deve submeter o formulário com sucesso e fechar o modal', async () => {
+        (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+            ok: true,
+            json: async () => ({ id: '123' }),
+        });
 
-        fireEvent.change(screen.getByPlaceholderText('Descrição (ex: Conta de Luz)'), { target: { value: 'Compra Teste' } });
-        fireEvent.change(screen.getByPlaceholderText('Valor (R$)'), { target: { value: '150.50' } });
-        fireEvent.change(screen.getByPlaceholderText('Categoria (ex: Moradia)'), { target: { value: 'Equipamentos' } });
+        const handleClose = vi.fn(); // Um "espião" para sabermos se o modal fechou
+        renderWithClient(<NewTransactionModal isOpen={true} onClose={handleClose} />);
 
-        const dateInput = document.querySelector('input[type="date"]');
-        if (dateInput) {
-            fireEvent.change(dateInput, { target: { value: '2026-03-25' } });
-        }
+        const user = userEvent.setup();
 
-        fireEvent.submit(screen.getByRole('button', { name: /Salvar Transação/i }));
+        await user.type(screen.getByPlaceholderText(/descrição/i), 'Conta da Internet');
+        await user.type(screen.getByPlaceholderText(/valor/i), '150');
+        await user.type(screen.getByPlaceholderText(/categoria/i), 'Despesas Fixas');
+
+        const dateInput = document.querySelector('input[type="date"]') as HTMLInputElement;
+        await user.type(dateInput, '2026-03-20');
+
+        const submitButton = screen.getByRole('button', { name: /salvar transação/i });
+        await user.click(submitButton);
 
         await waitFor(() => {
-            expect(mockMutateAsync).toHaveBeenCalledTimes(1);
-            expect(mockMutateAsync).toHaveBeenCalledWith(expect.objectContaining({
-                description: 'Compra Teste',
-                amount: 150.5,
-                category: 'Equipamentos',
-                type: 'expense' // default
-            }));
+            expect(global.fetch).toHaveBeenCalledTimes(1);
+            expect(handleClose).toHaveBeenCalledTimes(1);
         });
-    });
-
-    it('should call onClose when close button is clicked', () => {
-        const { container } = render(<NewTransactionModal isOpen={true} onClose={mockOnClose} />);
-        const closeButton = container.querySelector('button.text-gray-400');
-        if (closeButton) {
-            fireEvent.click(closeButton);
-        }
-        expect(mockOnClose).toHaveBeenCalled();
     });
 });

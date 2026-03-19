@@ -5,7 +5,7 @@ import { useCreateTransaction } from '../hooks/useCreateTransaction';
 
 const newTransactionSchema = z.object({
     description: z.string().min(3, 'A descrição deve ter pelo menos 3 caracteres'),
-    amount: z.number().positive('O valor deve ser maior que zero'),
+    amount: z.any().transform(Number).refine((val) => !isNaN(val) && val > 0, 'O valor deve ser maior que zero'),
     type: z.enum(['income', 'expense']),
     category: z.string().min(2, 'Informe uma categoria válida'),
     date: z.string().min(1, 'A data é obrigatória'),
