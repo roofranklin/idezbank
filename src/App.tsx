@@ -10,8 +10,7 @@ import { ChartCard } from './components/ChartCard';
 export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [selectedMonth] = useState(3);
-  const { data: summary, isLoading, isError } = useSummary({ month: selectedMonth, year: 2026 });
+  const { data: summary, isLoading, isError } = useSummary();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-slate-50 to-indigo-100 flex font-sans antialiased text-gray-900 overflow-x-hidden">
