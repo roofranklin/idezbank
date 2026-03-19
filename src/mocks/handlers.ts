@@ -122,7 +122,20 @@ export const handlers = [
             filtered = filtered.filter((t) => t.amount <= Number(maxAmount));
         }
 
-        filtered.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        const sortBy = url.searchParams.get('sortBy') || 'date';
+        const sortOrder = url.searchParams.get('sortOrder') || 'desc';
+
+        filtered.sort((a, b) => {
+            let comparison = 0;
+
+            if (sortBy === 'amount') {
+                comparison = a.amount - b.amount;
+            } else {
+                comparison = new Date(a.date).getTime() - new Date(b.date).getTime();
+            }
+
+            return sortOrder === 'desc' ? -comparison : comparison;
+        });
 
         const totalCount = filtered.length;
         const totalPages = Math.ceil(totalCount / limit);

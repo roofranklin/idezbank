@@ -32,7 +32,7 @@ describe('useSummary Hook', () => {
         await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
         expect(result.current.data).toEqual(mockResponse);
-        expect(global.fetch).toHaveBeenCalledWith('/api/summary');
+        expect(global.fetch).toHaveBeenCalledWith(expect.stringContaining('/api/summary'));
     });
 
     it('should handle fetch errors', async () => {

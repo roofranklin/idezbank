@@ -12,6 +12,8 @@ export function TransactionTable() {
     const [endDate, setEndDate] = useState('');
     const [minAmount, setMinAmount] = useState('');
     const [maxAmount, setMaxAmount] = useState('');
+    const [sortBy, setSortBy] = useState<'date' | 'amount'>('date');
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
     const [debouncedSearch, setDebouncedSearch] = useState('');
     const [debouncedMin, setDebouncedMin] = useState('');
@@ -42,6 +44,8 @@ export function TransactionTable() {
         endDate: endDate || undefined,
         minAmount: debouncedMin ? Number(debouncedMin) : undefined,
         maxAmount: debouncedMax ? Number(debouncedMax) : undefined,
+        sortBy,
+        sortOrder,
     });
 
     const formatCurrency = (value: number) =>
@@ -50,6 +54,21 @@ export function TransactionTable() {
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
         return new Intl.DateTimeFormat('pt-BR', { month: 'short', day: '2-digit' }).format(date);
+    };
+
+    const handleSort = (column: 'date' | 'amount') => {
+        if (sortBy === column) {
+            setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+        } else {
+            setSortBy(column);
+            setSortOrder('desc');
+        }
+        setPage(1);
+    };
+
+    const SortIcon = ({ column }: { column: 'date' | 'amount' }) => {
+        if (sortBy !== column) return <span className="text-gray-300 ml-1 opacity-0 group-hover:opacity-100 transition-opacity">↕</span>;
+        return sortOrder === 'asc' ? <span className="text-blue-600 ml-1">↑</span> : <span className="text-blue-600 ml-1">↓</span>;
     };
 
     return (
@@ -132,18 +151,29 @@ export function TransactionTable() {
                 <>
                     <div className={`overflow-x-auto transition-opacity duration-200 ${isFetching ? 'opacity-50' : 'opacity-100'}`}>
                         <table className="w-full text-left text-sm whitespace-nowrap">
-                            <thead className="text-gray-400 font-medium border-b border-gray-100 bg-white">
+                            <thead className="bg-gray-50 text-gray-700 font-semibold border-b border-gray-100 select-none">
                                 <tr>
-                                    <th className="px-4 sm:px-6 py-4 font-medium w-16 hidden sm:table-cell">Status</th>
-                                    <th className="px-4 sm:px-6 py-4 font-medium">Descrição</th>
-                                    <th className="px-4 sm:px-6 py-4 font-medium hidden sm:table-cell">Categoria</th>
-                                    <th className="px-4 sm:px-6 py-4 font-medium text-right sm:text-left">Data</th>
-                                    <th className="px-4 sm:px-6 py-4 font-medium text-right">Valor</th>
+                                    <th
+                                        className="px-4 sm:px-6 py-4 cursor-pointer hover:bg-gray-100 transition-colors group w-[120px]"
+                                        onClick={() => handleSort('date')}
+                                    >
+                                        <div className="flex items-center">Data <SortIcon column="date" /></div>
+                                    </th>
+                                    <th className="px-4 sm:px-6 py-4 w-16 hidden sm:table-cell">Tipo</th>
+                                    <th className="px-4 sm:px-6 py-4">Descrição</th>
+                                    <th className="px-4 sm:px-6 py-4 hidden sm:table-cell">Categoria</th>
+                                    <th
+                                        className="px-4 sm:px-6 py-4 text-right cursor-pointer hover:bg-gray-100 transition-colors group"
+                                        onClick={() => handleSort('amount')}
+                                    >
+                                        <div className="flex items-center justify-end">Valor <SortIcon column="amount" /></div>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-50/50">
                                 {data.data.map((transaction) => (
                                     <tr key={transaction.id} className="hover:bg-gray-50/50 transition-colors group">
+                                        <td className="px-4 sm:px-6 py-4 text-gray-500 whitespace-nowrap text-xs sm:text-sm">{formatDate(transaction.date)}</td>
                                         <td className="px-4 sm:px-6 py-4 hidden sm:table-cell">
                                             <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${transaction.type === 'income' ? 'bg-success/10 text-success' : 'bg-gray-100 text-gray-500'}`}>
                                                 {transaction.type === 'income' ? (
@@ -157,8 +187,8 @@ export function TransactionTable() {
                                                 )}
                                             </div>
                                         </td>
-                                        <td 
-                                            className="px-4 sm:px-6 py-4 font-medium text-gray-900 max-w-[110px] sm:max-w-none truncate" 
+                                        <td
+                                            className="px-4 sm:px-6 py-4 font-medium text-gray-900 max-w-[110px] sm:max-w-none truncate"
                                             title={transaction.description}
                                         >
                                             {transaction.description}
@@ -168,7 +198,6 @@ export function TransactionTable() {
                                                 {transaction.category}
                                             </span>
                                         </td>
-                                        <td className="px-4 sm:px-6 py-4 text-gray-500 text-right sm:text-left whitespace-nowrap text-xs sm:text-sm">{formatDate(transaction.date)}</td>
                                         <td className={`px-4 sm:px-6 py-4 text-right font-semibold whitespace-nowrap ${transaction.type === 'income' ? 'text-success' : 'text-gray-900'}`}>
                                             {transaction.type === 'income' ? '+' : '-'} {formatCurrency(transaction.amount)}
                                         </td>

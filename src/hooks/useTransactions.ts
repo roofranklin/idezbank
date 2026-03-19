@@ -10,6 +10,8 @@ interface UseTransactionsParams {
     endDate?: string;
     minAmount?: number;
     maxAmount?: number;
+    sortBy?: 'date' | 'amount';
+    sortOrder?: 'asc' | 'desc';
 }
 
 const fetchTransactions = async (params: UseTransactionsParams): Promise<PaginatedResponse<Transaction>> => {
@@ -23,6 +25,8 @@ const fetchTransactions = async (params: UseTransactionsParams): Promise<Paginat
     if (params.endDate) url.searchParams.append('endDate', params.endDate);
     if (params.minAmount) url.searchParams.append('minAmount', params.minAmount.toString());
     if (params.maxAmount) url.searchParams.append('maxAmount', params.maxAmount.toString());
+    if (params.sortBy) url.searchParams.append('sortBy', params.sortBy);
+    if (params.sortOrder) url.searchParams.append('sortOrder', params.sortOrder);
 
     const response = await fetch(url.toString());
 
