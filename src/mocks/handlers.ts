@@ -2,7 +2,7 @@ import { http, HttpResponse } from 'msw';
 import type { Transaction, Summary, PaginatedResponse } from '../types';
 
 // Nosso banco de dados em memória inicial
-let transactions: Transaction[] = [
+const transactions: Transaction[] = [
     { id: '1', type: 'income', amount: 8500, date: '2026-03-05T10:00:00Z', category: 'Salário', description: 'Salário Allintra' },
     { id: '2', type: 'expense', amount: 850, date: '2026-03-06T14:30:00Z', category: 'Alimentação', description: 'Supermercado' },
     { id: '3', type: 'expense', amount: 45, date: '2026-03-07T09:15:00Z', category: 'Transporte', description: 'Uber' },
