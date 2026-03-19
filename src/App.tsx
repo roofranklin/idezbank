@@ -10,11 +10,11 @@ import { ChartCard } from './components/ChartCard';
 export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [selectedMonth, setSelectedMonth] = useState(3);
+  const [selectedMonth] = useState(3);
   const { data: summary, isLoading, isError } = useSummary({ month: selectedMonth, year: 2026 });
 
   return (
-    <div className="min-h-screen bg-[#F7F9FC] flex font-sans antialiased text-gray-900 overflow-x-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-slate-50 to-indigo-100 flex font-sans antialiased text-gray-900 overflow-x-hidden">
       <Sidebar isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
 
       <main className="flex-1 lg:ml-64 p-4 md:p-8 w-full max-w-[100vw]">
@@ -64,7 +64,7 @@ export default function App() {
             <h2 className="text-xl font-bold tracking-tight text-gray-900">Transações</h2>
             <button
               onClick={() => setIsModalOpen(true)}
-              className="w-full sm:w-auto text-sm font-semibold text-gray-900 bg-[#E4ECFA] hover:bg-[#D0DEFA] cursor-pointer py-2.5 md:py-2 px-4 rounded-xl transition-all active:scale-95 text-center"
+              className="w-full sm:w-auto text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 shadow-md cursor-pointer py-2.5 md:py-2 px-6 rounded-xl transition-all active:scale-95 text-center focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
               + Nova transação
             </button>

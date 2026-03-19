@@ -68,7 +68,7 @@ export function TransactionTable() {
 
     const SortIcon = ({ column }: { column: 'date' | 'amount' }) => {
         if (sortBy !== column) return <span className="text-gray-300 ml-1 opacity-0 group-hover:opacity-100 transition-opacity">↕</span>;
-        return sortOrder === 'asc' ? <span className="text-blue-600 ml-1">↑</span> : <span className="text-blue-600 ml-1">↓</span>;
+        return sortOrder === 'asc' ? <span className="text-indigo-600 ml-1">↑</span> : <span className="text-indigo-600 ml-1">↓</span>;
     };
 
     return (

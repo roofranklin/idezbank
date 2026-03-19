@@ -21,7 +21,7 @@ Pré-requisitos: Ter o [Node.js](https://nodejs.org/) instalado (versão 18 ou s
 
 1. Clone o repositório:
    ```bash
-   git clone [https://github.com/roofranklin/idezbank.git](https://github.com/roofranklin/idezbank.git)
+   git clone https://github.com/roofranklin/idezbank.git
    ```
 2. Entre no diretório:
    ```bash
@@ -64,6 +64,6 @@ Pensando num cenário de evolução contínua do produto, as próximas etapas de
 
 1. Virtualização de Listas: Implementar TanStack Virtual na tabela de transações para manter a performance de renderização em 60fps caso o usuário decida carregar centenas de transações na mesma página.
 2. Autenticação e Segurança: Implementar um fluxo de JWT com refresh tokens e proteção de rotas privadas.
-3. Acessibilidade (a11y): Garantir que todos os modais e tabelas são 100% navegáveis via teclado e compatíveis com leitores de ecrã (ARIA labels, foco trapping).
+3. Acessibilidade (a11y): Garantir que todos os modais e tabelas são 100% navegáveis via teclado e compatíveis com leitores de tela (ARIA labels, foco trapping).
 4. Testes E2E: Adicionar Cypress ou Playwright para testes de ponta a ponta, simulando a jornada completa do usuário num ambiente de browser real.
 5. Dark Mode: Aproveitar a arquitetura de variáveis do Tailwind CSS para adicionar suporte nativo a temas claros e escuros.

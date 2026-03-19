@@ -3,13 +3,13 @@ import type { Transaction, Summary, PaginatedResponse } from '../types';
 
 // Nosso banco de dados em memória inicial
 const transactions: Transaction[] = [
-    { id: '1', type: 'income', amount: 8500, date: '2026-03-05T10:00:00Z', category: 'Salário', description: 'Salário Allintra' },
-    { id: '2', type: 'expense', amount: 850, date: '2026-03-06T14:30:00Z', category: 'Alimentação', description: 'Supermercado' },
+    { id: '1', type: 'income', amount: 12500, date: '2026-03-05T10:00:00Z', category: 'Salário', description: 'Salário' },
+    { id: '2', type: 'expense', amount: 1150, date: '2026-03-06T14:30:00Z', category: 'Alimentação', description: 'Supermercado' },
     { id: '3', type: 'expense', amount: 45, date: '2026-03-07T09:15:00Z', category: 'Transporte', description: 'Uber' },
-    { id: '4', type: 'expense', amount: 120, date: '2026-03-08T11:00:00Z', category: 'Moradia', description: 'Conta de Energia' },
+    { id: '4', type: 'expense', amount: 620, date: '2026-03-08T11:00:00Z', category: 'Moradia', description: 'Conta de Energia' },
     { id: '5', type: 'income', amount: 4500, date: '2026-03-10T16:20:00Z', category: 'Freelance', description: 'Projeto OnlyEnergy' },
     { id: '6', type: 'expense', amount: 65, date: '2026-03-11T12:30:00Z', category: 'Alimentação', description: 'Almoço Restaurante' },
-    { id: '7', type: 'expense', amount: 35, date: '2026-03-12T08:00:00Z', category: 'Assinaturas', description: 'Google One AI Premium' },
+    { id: '7', type: 'expense', amount: 96.9, date: '2026-03-12T08:00:00Z', category: 'Assinaturas', description: 'Google One AI Premium' },
     { id: '8', type: 'expense', amount: 1000, date: '2026-03-12T15:45:00Z', category: 'Investimentos', description: 'Aporte Kast Finance' },
     { id: '9', type: 'expense', amount: 150, date: '2026-03-13T18:10:00Z', category: 'Saúde', description: 'Farmácia' },
     { id: '10', type: 'expense', amount: 500, date: '2026-03-14T10:30:00Z', category: 'Investimentos', description: 'Compra de USDT' },

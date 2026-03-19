@@ -76,7 +76,7 @@ export function NewTransactionModal({ isOpen, onClose }: ModalProps) {
                     </div>
 
                     <div>
-                        <input type="text" placeholder="Descrição (ex: Conta de Luz)" {...register('description')} className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+                        <input type="text" placeholder="Descrição (ex: Conta de Luz)" {...register('description')} className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
                         {errors.description && <span className="text-red-500 text-xs mt-1">{errors.description.message}</span>}
                     </div>
 
@@ -87,25 +87,25 @@ export function NewTransactionModal({ isOpen, onClose }: ModalProps) {
                                 step="0.01"
                                 placeholder="Valor (R$)"
                                 {...register('amount', { valueAsNumber: true })}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                             />
                             {errors.amount && <span className="text-red-500 text-xs mt-1">{errors.amount.message}</span>}
                         </div>
                         <div>
-                            <input type="date" {...register('date')} className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700" />
+                            <input type="date" {...register('date')} className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-700" />
                             {errors.date && <span className="text-red-500 text-xs mt-1">{errors.date.message}</span>}
                         </div>
                     </div>
 
                     <div>
-                        <input type="text" placeholder="Categoria (ex: Moradia)" {...register('category')} className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+                        <input type="text" placeholder="Categoria (ex: Moradia)" {...register('category')} className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
                         {errors.category && <span className="text-red-500 text-xs mt-1">{errors.category.message}</span>}
                     </div>
 
                     <button
                         type="submit"
                         disabled={isPending}
-                        className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-3 px-4 rounded-xl transition-colors mt-2"
+                        className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white font-semibold py-3 px-4 rounded-xl transition-colors mt-2"
                     >
                         {isPending ? 'Salvando...' : 'Salvar Transação'}
                     </button>

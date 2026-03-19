@@ -1,6 +1,10 @@
 export function CreditCard() {
     return (
-        <div className="bg-[#E4ECFA] p-7 rounded-[24px] text-gray-900 flex flex-col justify-between h-56 relative border-none">
+        <div className="bg-white/40 backdrop-blur-md p-7 rounded-[24px] text-gray-900 flex flex-col justify-between h-56 relative border border-white/60 shadow-xl overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/40 to-transparent opacity-50 pointer-events-none"></div>
+            <div className="absolute -top-12 -right-12 w-32 h-32 bg-blue-400/20 rounded-full blur-2xl pointer-events-none"></div>
+            <div className="absolute -bottom-8 -left-8 w-24 h-24 bg-indigo-400/20 rounded-full blur-2xl pointer-events-none"></div>
+            
             <div className="z-10 flex flex-col justify-center h-full gap-5">
                 <div className="flex gap-2">
                     <span className="text-xl font-semibold tracking-[0.15em] text-gray-900">****</span>
