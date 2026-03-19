@@ -4,6 +4,8 @@ Um painel financeiro moderno, seguro e performático desenvolvido para simular a
 
 Este projeto foi desenvolvido como resolução de um desafio técnico para a posição de Desenvolvedor React Especialista, com foco em boas práticas, tipagem estática e experiência do usuário (UX).
 
+**🌐 Acesse a aplicação ao vivo:** [https://idezbank.vercel.app/](https://idezbank.vercel.app/)
+
 ## 🚀 Tecnologias e Arquitetura Adotada
 
 A arquitetura foi pensada para um ambiente real de *fintech*, priorizando escalabilidade, previsibilidade de dados e performance.
