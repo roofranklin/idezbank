@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSummary } from '../hooks/useSummary';
 import { useAvailableMonths } from '../hooks/useAvailableMonths';
 
@@ -39,6 +39,12 @@ export function ChartCard() {
     const incomeHeight = `${(income / max) * 100}%`;
     const expenseHeight = `${(expense / max) * 100}%`;
 
+    const [tappedBar, setTappedBar] = useState<'income' | 'expense' | null>(null);
+
+    const handleBarTap = useCallback((bar: 'income' | 'expense') => {
+        setTappedBar((prev) => (prev === bar ? null : bar));
+    }, []);
+
     return (
         <div className="bg-white p-7 rounded-[24px] shadow-sm shadow-gray-100/50 border-none flex flex-col justify-between h-56 relative overflow-hidden">
             <div className="z-10 relative mb-2 flex justify-between items-start">
@@ -73,26 +79,26 @@ export function ChartCard() {
                     </div>
                 ) : (
                     <>
-                        <div className="flex flex-col items-center h-full justify-end group w-16">
+                        <div className="flex flex-col items-center h-full justify-end group w-16" onClick={() => handleBarTap('income')}>
                             <div className="relative flex justify-center w-full h-[100px] items-end">
-                                <span className="absolute -top-8 text-xs font-bold text-gray-900 opacity-0 group-hover:opacity-100 transition-opacity bg-white px-2 py-1 shadow-sm border border-gray-100 rounded-lg z-20 whitespace-nowrap">
+                                <span className={`absolute -top-8 text-xs font-bold text-gray-900 transition-opacity bg-white px-2 py-1 shadow-sm border border-gray-100 rounded-lg z-20 whitespace-nowrap ${tappedBar === 'income' ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
                                     {formatCurrency(income)}
                                 </span>
                                 <div
-                                    className="w-full bg-green-300 rounded-t-[14px] transition-all duration-1000 ease-out origin-bottom hover:bg-green-600"
+                                    className="w-full bg-green-300 rounded-t-[14px] transition-all duration-1000 ease-out origin-bottom hover:bg-green-600 cursor-pointer"
                                     style={{ height: incomeHeight === '0%' ? '5%' : incomeHeight }}
                                 ></div>
                             </div>
                             <span className="text-xs font-medium text-gray-400 mt-3">Receitas</span>
                         </div>
 
-                        <div className="flex flex-col items-center h-full justify-end group w-16">
+                        <div className="flex flex-col items-center h-full justify-end group w-16" onClick={() => handleBarTap('expense')}>
                             <div className="relative flex justify-center w-full h-[100px] items-end">
-                                <span className="absolute -top-8 text-xs font-bold text-gray-900 opacity-0 group-hover:opacity-100 transition-opacity bg-white px-2 py-1 shadow-sm border border-gray-100 rounded-lg z-20 whitespace-nowrap">
+                                <span className={`absolute -top-8 text-xs font-bold text-gray-900 transition-opacity bg-white px-2 py-1 shadow-sm border border-gray-100 rounded-lg z-20 whitespace-nowrap ${tappedBar === 'expense' ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
                                     {formatCurrency(expense)}
                                 </span>
                                 <div
-                                    className="w-full bg-red-400 rounded-t-[14px] transition-all duration-1000 ease-out origin-bottom hover:bg-red-600"
+                                    className="w-full bg-red-400 rounded-t-[14px] transition-all duration-1000 ease-out origin-bottom hover:bg-red-600 cursor-pointer"
                                     style={{ height: expenseHeight === '0%' ? '5%' : expenseHeight }}
                                 ></div>
                             </div>
