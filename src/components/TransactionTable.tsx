@@ -40,6 +40,20 @@ export function TransactionTable() {
         setPage(1);
     }, [typeFilter, startDate, endDate]);
 
+    const parseCurrency = (value: string): number | undefined => {
+        if (!value) return undefined;
+        const cleaned = value.replace(/[^\d,-]/g, '').replace(',', '.');
+        const num = Number(cleaned);
+        return isNaN(num) ? undefined : num;
+    };
+
+    const formatFilterCurrency = (raw: string): string => {
+        const digits = raw.replace(/\D/g, '');
+        if (!digits) return '';
+        const num = Number(digits) / 100;
+        return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(num);
+    };
+
     const { data, isLoading, isFetching, isError } = useTransactions({
         page,
         limit,
@@ -47,8 +61,8 @@ export function TransactionTable() {
         type: typeFilter === 'all' ? undefined : typeFilter,
         startDate: startDate ? format(startDate, 'yyyy-MM-dd') : undefined,
         endDate: endDate ? format(endDate, 'yyyy-MM-dd') : undefined,
-        minAmount: debouncedMin ? Number(debouncedMin) : undefined,
-        maxAmount: debouncedMax ? Number(debouncedMax) : undefined,
+        minAmount: parseCurrency(debouncedMin),
+        maxAmount: parseCurrency(debouncedMax),
         sortBy,
         sortOrder,
     });
@@ -139,18 +153,18 @@ export function TransactionTable() {
                         className="w-full px-4 py-3 bg-gray-50/80 hover:bg-gray-100/50 border-none rounded-xl text-sm focus:ring-0 outline-none text-gray-900 font-medium transition-all"
                     />
                     <input
-                        type="number"
-                        step="0.01"
+                        type="text"
+                        inputMode="numeric"
                         value={minAmount}
-                        onChange={(e) => setMinAmount(e.target.value)}
+                        onChange={(e) => setMinAmount(formatFilterCurrency(e.target.value))}
                         placeholder="Valor Min (R$)"
                         className="px-4 py-3 bg-gray-50/80 hover:bg-gray-100/50 border-none rounded-xl text-sm focus:ring-0 outline-none placeholder:text-gray-400 text-gray-900 font-medium transition-all"
                     />
                     <input
-                        type="number"
-                        step="0.01"
+                        type="text"
+                        inputMode="numeric"
                         value={maxAmount}
-                        onChange={(e) => setMaxAmount(e.target.value)}
+                        onChange={(e) => setMaxAmount(formatFilterCurrency(e.target.value))}
                         placeholder="Valor Máx (R$)"
                         className="px-4 py-3 bg-gray-50/80 hover:bg-gray-100/50 border-none rounded-xl text-sm focus:ring-0 outline-none placeholder:text-gray-400 text-gray-900 font-medium transition-all"
                     />
