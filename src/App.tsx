@@ -7,6 +7,8 @@ import { CreditCard } from './components/CreditCard';
 import { SummaryCard } from './components/SummaryCard';
 import { ChartCard } from './components/ChartCard';
 
+import { Toaster } from 'react-hot-toast';
+
 export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -14,6 +16,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-slate-50 to-indigo-100 flex font-sans antialiased text-gray-900 overflow-x-hidden">
+      <Toaster position="top-right" />
       <Sidebar isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
 
       <main className="flex-1 lg:ml-64 p-4 md:p-8 w-full max-w-[100vw]">

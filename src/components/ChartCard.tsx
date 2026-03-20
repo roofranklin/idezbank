@@ -79,7 +79,7 @@ export function ChartCard() {
                                     {formatCurrency(income)}
                                 </span>
                                 <div
-                                    className="w-full bg-[#E4ECFA] rounded-t-[14px] transition-all duration-1000 ease-out origin-bottom hover:bg-[#D0DEFA]"
+                                    className="w-full bg-green-300 rounded-t-[14px] transition-all duration-1000 ease-out origin-bottom hover:bg-green-600"
                                     style={{ height: incomeHeight === '0%' ? '5%' : incomeHeight }}
                                 ></div>
                             </div>
@@ -92,7 +92,7 @@ export function ChartCard() {
                                     {formatCurrency(expense)}
                                 </span>
                                 <div
-                                    className="w-full bg-red-50 rounded-t-[14px] transition-all duration-1000 ease-out origin-bottom hover:bg-red-100"
+                                    className="w-full bg-red-400 rounded-t-[14px] transition-all duration-1000 ease-out origin-bottom hover:bg-red-600"
                                     style={{ height: expenseHeight === '0%' ? '5%' : expenseHeight }}
                                 ></div>
                             </div>
